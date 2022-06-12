@@ -1,0 +1,74 @@
+<p *ngIf="!users"><em>Loading...</em></p>
+
+<h1 id="tableLabel">Users list</h1>
+<input type="button" value="Add" class="btn btn-default" (click)="add()" />
+<table *ngIf="tableMode; else create" class="table table-striped">
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Login</td>
+      <td>Name</td>
+      <td>Email</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of users">
+      <ng-template [ngIf]="u.id != user.id" [ngIfElse]="edit">
+        <td>{{u.id}}</td>
+        <td>{{u.login}}</td>
+        <td>{{u.name}}</td>
+        <td>{{u.email}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editUser(u)">Изменить</button>
+          <button class="btn btn-sm btn-danger" (click)="delete(u)">Удалить</button>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<!--шаблон для редактирования-->
+<ng-template #edit>
+  <td>
+    <input readonly type="text" [(ngModel)]="user.id" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="user.login" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="user.name" class="form-control" />
+  </td>
+  <td>
+    <input type="email" [(ngModel)]="user.email" class="form-control" />
+  </td>
+  <td>
+    <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+  </td>
+</ng-template>
+
+<!--шаблон для добавления-->
+<ng-template #create>
+  <div class="form-group m-1">
+    <label>Login</label>
+    <input type="text" [(ngModel)]="user.login" class="form-control" />
+  </div>
+  <div class="form-group m-1">
+    <label>Name</label>
+    <input type="text" [(ngModel)]="user.name" class="form-control" />
+  </div>
+  <div class="form-group m-1">
+    <label>Email</label>
+    <input type="email" [(ngModel)]="user.email" class="form-control" />
+  </div>
+  <div>
+    <div class="btn-group m-1" role="group">
+      <input type="button" value="Save" (click)="save()" class="btn btn-success" />
+      <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+    </div>
+  </div>
+  <div *ngIf="errorMessage != ''" class="alert alert-danger" role="alert">
+    {{errorMessage}}
+  </div>
+</ng-template>

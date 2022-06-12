@@ -1,0 +1,63 @@
+<p *ngIf="!permissions"><em>Loading...</em></p>
+
+<h1 id="tableLabel">Permissions list</h1>
+<input type="button" value="Add" class="btn btn-default" (click)="add()" />
+<table *ngIf="tableMode; else create" class="table table-striped">
+  <thead>
+    <tr>
+      <td>ID</td>
+      <td>Code</td>
+      <td>Description</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of permissions">
+      <ng-template [ngIf]="p.id != permission.id" [ngIfElse]="edit">
+        <td>{{p.id}}</td>
+        <td>{{p.code}}</td>
+        <td>{{p.description}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editPermission(p)">Изменить</button>
+          <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
+
+<!--шаблон для редактирования-->
+<ng-template #edit>
+  <td>
+    <input readonly type="text" [(ngModel)]="permission.id" class="form-control" />
+  </td>
+  <td>
+    <input type="text" [(ngModel)]="permission.code" class="form-control" />
+  </td>
+  <td>
+    <input type="email" [(ngModel)]="permission.description" class="form-control" />
+  </td>
+  <td>
+    <input type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+    <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+  </td>
+</ng-template>
+
+<!--шаблон для добавления-->
+<ng-template #create>
+  <div class="form-group m-1">
+    <label>Code</label>
+    <input type="text" [(ngModel)]="permission.code" class="form-control" />
+  </div>
+  <div class="form-group m-1">
+    <label>Description</label>
+    <input type="text" [(ngModel)]="permission.description" class="form-control" />
+  </div>
+  <div class="btn-group m-1" role="group">
+    <input type="button" value="Save" (click)="save()" class="btn btn-success" />
+    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+  </div>
+  <div *ngIf="errorMessage != ''" class="alert alert-danger" role="alert">
+    {{errorMessage}}
+  </div>
+</ng-template>

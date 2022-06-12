@@ -1,0 +1,56 @@
+
+<h2>User</h2>
+
+<div class="input-group">
+  <input type="number" min="1" class="form-control" placeholder="User ID" aria-label="User ID" aria-describedby="basic-addon2" [(ngModel)]="userId" (change)="loadPermissions()">
+ </div>
+
+<div *ngIf="userWithPermissions != null && userWithPermissions.name != null && userId > 0;">
+  <div class="input-group">
+    <input readonly type="text" class="form-control" placeholder="User Name" aria-label="User Name" aria-describedby="basic-addon2" [(ngModel)]="userWithPermissions.name">
+    <input readonly type="text" class="form-control" placeholder="User Login" aria-label="User Login" aria-describedby="basic-addon2" [(ngModel)]="userWithPermissions.login">
+    <input readonly type="text" class="form-control" placeholder="User Email" aria-label="User Email" aria-describedby="basic-addon2" [(ngModel)]="userWithPermissions.email">
+  </div>
+
+  <h2>User permissions</h2>
+  <input type="button" value="Add" class="btn btn-default" (click)="openAddForm()" />
+  <table *ngIf="tableMode; else add" class="table table-striped">
+    <thead>
+      <tr>
+        <td>Code</td>
+        <td>Description</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of permissions">
+        <td>{{p.code}}</td>
+        <td>{{p.description}}</td>
+        <td>
+          <button class="btn btn-sm btn-danger" (click)="delete(p)">Удалить</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!--шаблон для добавления-->
+<ng-template #add>
+  <div class="form-group m-1">
+    <label>ID</label>
+    <input type="text" [(ngModel)]="permissionId" class="form-control" (change)="loadPermission()" />
+  </div>
+  <div class="form-group m-1">
+    <label>Code</label>
+    <input type="text" [(ngModel)]="permission.code" class="form-control" readonly  />
+  </div>
+  <div class="form-group m-1">
+    <label>Description</label>
+    <input type="text" [(ngModel)]="permission.description" class="form-control" readonly  />
+  </div>
+  <div class="btn-group m-1" role="group">
+    <input type="button" value="Add" (click)="addPermission()" class="btn btn-success" />
+    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+  </div>
+</ng-template>
